@@ -1,5 +1,5 @@
 import TicTacToeWithAI from './ticTacToe.js';
-import { $ } from './utilities.js';
+import { $, $all } from './utilities.js';
 
 
 const ticTacToe = new TicTacToeWithAI('ticTacToe');
@@ -19,10 +19,13 @@ $('#ticTacToe').querySelectorAll('div[cell-num]').forEach(cell => {
     };
 });
 
-$('#reset').addEventListener('click',e => { 
-    ticTacToe.reset();
-    $('.winner-page').style.display = 'none';
+$all('#reset').forEach(btn => {
+    btn.addEventListener('click',e => { 
+        ticTacToe.reset();
+        $('.winner-page').style.display = 'none';
+    });
 });
+
 
 function displayWinner(winner) {
     $('#winner').innerHTML = 'Hai ' + (winner === 2 ? 'perso' : winner === 1 ? 'vinto' : 'pareggiato');

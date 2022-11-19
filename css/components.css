@@ -6,7 +6,6 @@
     gap: 0.5rem;
     grid-auto-rows: 3;
     background-color: var(--clr-primary);
-    border: 1px solid red;
 }
 
 .tic-tac-toe > div {
@@ -16,17 +15,20 @@
     align-items: center;
     justify-content: center;
     background-color: var(--clr-background);
-    border: 1px solid red;
+    
 }
 
-.tic-tac-toe__cross > * {
-    fill: var(--clr-cross);
+.tic-tac-toe__cross, .tic-tac-toe__circle {
+    height: 4rem;
+    width: 4rem;
+}
 
+.tic-tac-toe__cross {
+    stroke: var(--clr-cross);
 }
 
 .tic-tac-toe__circle > * {
     fill: var(--clr-circle);
-    
 }
 
 /*_______Button______*/
@@ -62,4 +64,20 @@
 .button:hover:before {
     top: 0;
     left: 0;
+}
+
+/*______winner-page______*/
+.winner-page {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    background-color: var(--clr-background);
+    z-index: 1000;
 }

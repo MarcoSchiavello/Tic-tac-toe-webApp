@@ -10,7 +10,7 @@ function createMatrix(rows, cols, initVal = 0) {
     const newMatrix = [];
 
     for(let i = 0; i < rows; i++)
-        newMatrix.push(Array.apply(null, Array(3)).map(_ => initVal));
+        newMatrix.push(Array.apply(null, Array(cols)).map(_ => initVal));
     
     return newMatrix;
 }

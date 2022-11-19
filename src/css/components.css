@@ -1,0 +1,65 @@
+/*________Tic-tac-toe_______*/
+.tic-tac-toe {
+    width: max-content;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    grid-auto-rows: 3;
+    background-color: var(--clr-primary);
+    border: 1px solid red;
+}
+
+.tic-tac-toe > div {
+    width: 10vh;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--clr-background);
+    border: 1px solid red;
+}
+
+.tic-tac-toe__cross > * {
+    fill: var(--clr-cross);
+
+}
+
+.tic-tac-toe__circle > * {
+    fill: var(--clr-circle);
+    
+}
+
+/*_______Button______*/
+.button {
+    position: relative;
+    padding: 1rem 2rem 0.5rem 2.5rem;
+    color: var(--clr-primary);
+    border: 3px solid var(--clr-primary);
+    background-color: transparent;
+    -webkit-transition: padding 0.3s ease-in-out;
+    transition: padding 0.3s ease-in-out;
+}
+
+.button:before {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    background-color: var(--clr-btn-background);
+    border-right: 3px solid var(--clr-btn-background);
+    border-bottom: 3px solid var(--clr-btn-background);
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+    padding: 0.75rem 2.25rem;
+}
+
+.button:hover:before {
+    top: 0;
+    left: 0;
+}

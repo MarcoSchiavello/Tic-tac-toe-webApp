@@ -5,7 +5,7 @@ const icons = {
     'X': `
         <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             width="30.121px" height="30.12px" viewBox="0 0 30.121 30.12" style="enable-background:new 0 0 30.121 30.12;"
-            xml:space="preserve" class="ticTacToe__cross">
+            xml:space="preserve" class="tic-tac-toe__cross">
             <path d="M29.095,20.118c1.365,1.364,1.365,3.582,0,4.948l-4.027,4.027c-0.684,0.684-1.58,1.025-2.475,1.025
                 c-0.896,0-1.792-0.344-2.477-1.025l-5.056-5.058l-5.058,5.06c-0.684,0.684-1.58,1.024-2.475,1.024s-1.792-0.343-2.475-1.024
                 l-4.027-4.027c-1.367-1.367-1.367-3.584,0-4.949l5.058-5.059l-5.058-5.058c-1.367-1.367-1.367-3.584,0-4.949l4.027-4.027
@@ -15,7 +15,7 @@ const icons = {
     `,
     'O': `
         <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-        width="94px" height="94px" viewBox="0 0 94 94" style="enable-background:new 0 0 94 94;" xml:space="preserve" class="ticTacToe__circle">
+        width="94px" height="94px" viewBox="0 0 94 94" style="enable-background:new 0 0 94 94;" xml:space="preserve" class="tic-tac-toe__circle">
             <path d="M47,94C21.084,94,0,72.916,0,47S21.084,0,47,0s47,21.084,47,47S72.916,94,47,94z M47,12.186
                 c-19.196,0-34.814,15.618-34.814,34.814c0,19.195,15.618,34.814,34.814,34.814c19.195,0,34.814-15.619,34.814-34.814
                 C81.814,27.804,66.195,12.186,47,12.186z"/>
@@ -28,6 +28,7 @@ class TicTacToeWithAI {
     #turn;
     #divElement;
     #fieldMatrix;
+    #status = true;
 
     constructor(divElementId) {
         this.#divElement = $('#' + divElementId);
@@ -41,36 +42,57 @@ class TicTacToeWithAI {
         this.#updateRender();
     }
 
+    changeStatus(status) {
+        this.#divElement.querySelectorAll('div[cell-num]').forEach(cell => {
+            if(cell.getAttribute('clicked') === 'true')
+                return;
+
+            if(this.#status)
+                cell.classList.add('disable');
+            else 
+                cell.classList.remove('disable');
+
+        });
+
+        this.#status = status;
+    }
+
     get turn() {
         return this.#turn + 1;
     }
 
     #cellNuberToCoords(cellNum) {
         return {
-            x: Math.floor(cellNum / SIZE),
-            y: Math.floor(cellNum - (Math.floor(cellNum / SIZE) * SIZE))
+            row: Math.floor(cellNum / SIZE),
+            col: cellNum - (Math.floor(cellNum / SIZE) * SIZE)
         }
+    }
+
+    #coordsToCellNuber(row, col) {
+        return (row * SIZE) + col;
     }
 
     #updateRender() {
         this.#divElement.querySelectorAll('div[cell-num]').forEach(cell => {
             const coords = this.#cellNuberToCoords(+cell.getAttribute('cell-num'));
-            cell.innerHTML = icons[this.#fieldMatrix[coords.x][coords.y]];
+            cell.innerHTML = icons[this.#fieldMatrix[coords.row][coords.col]];
         });
     }
 
-    select(cellNum) {
+    select(cellNum, character = 'X') {
         const coords = this.#cellNuberToCoords(cellNum);
-        this.#fieldMatrix[coords.x][coords.y] = 'X';
+        this.#fieldMatrix[coords.row][coords.col] = character;
         this.#updateRender();
         this.#turn++;
+        
+        const cellSelected = this.#divElement.querySelector(`div[cell-num="${cellNum}"]`);
+        cellSelected.setAttribute('clicked', 'true');
+        cellSelected.classList.add('disable');
     }
 
     AIselect() {
         const selectionPos = this.#minimax(Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER).actionPosition;
-        this.#fieldMatrix[selectionPos.x][selectionPos.y] = 'O';
-        this.#updateRender();
-        this.#turn++;
+        this.select(this.#coordsToCellNuber(selectionPos.row, selectionPos.col), 'O');
     }
 
     #nthBlankPosition(blankNum = 1) {
@@ -80,18 +102,18 @@ class TicTacToeWithAI {
                     blankNum--;
                     if(blankNum <= 0)
                         return {
-                            x: i,
-                            y: j
+                            row: i,
+                            col: j
                         };
                 }
-
+               
         return { 
-            x: -1, 
-            y: -1 
+            row: -1, 
+            col: -1 
         };
     }
 
-    #checkWinner() {
+    checkWinner() {
         for(let i = 0; i < SIZE; i++) {
             if(this.#fieldMatrix[i][0] === this.#fieldMatrix[i][1] && this.#fieldMatrix[i][1] === this.#fieldMatrix[i][2] && this.#fieldMatrix[i][2] !== ' ')
               return 2 * (this.#fieldMatrix[i][1] === 'O') + (this.#fieldMatrix[i][1] === 'X');
@@ -109,25 +131,25 @@ class TicTacToeWithAI {
     }
 
     #minimax(high, alpha, beta, maximize = true) {
-        const evaluation = this.#checkWinner();
-    
-        if((this.#nthBlankPosition().x == -1) || evaluation != 0 || !high) {
+        const evaluation = this.checkWinner();
+
+        if((this.#nthBlankPosition().row === -1) || evaluation != 0 || !high) {
             return {
                 value: evaluation == 2 ? 1 : (evaluation == 1 ? -1 : 0) ,
-                actionPosition: { x: -1, y: -1 }
+                actionPosition: { row: -1, col: -1 }
             };
         }
             
         let childNum = 0;
-        let maxEvalRecord = { value: Number.MIN_SAFE_INTEGER, actionPosition: { x: -1, y: -1 } }; 
-        let minEvalRecord = { value: Number.MAX_SAFE_INTEGER, actionPosition: { x: -1, y: -1 } };
+        let maxEvalRecord = { value: Number.MIN_SAFE_INTEGER, actionPosition: { row: -1, col: -1 } }; 
+        let minEvalRecord = { value: Number.MAX_SAFE_INTEGER, actionPosition: { row: -1, col: -1 } };
         let nextPos;
     
-        while((nextPos = this.#nthBlankPosition(++childNum)).x != -1) {
-            this.#fieldMatrix[nextPos.x][nextPos.y] = (maximize * 'O') + (!maximize * 'X');
-    
+        while((nextPos = this.#nthBlankPosition(++childNum)).row !== -1) {
+            this.#fieldMatrix[nextPos.row][nextPos.col] = maximize ? 'O' :'X';
+            
             const evalRecord = this.#minimax(high - 1, alpha, beta, !maximize);
-            evalRecord.actionPosition = { x: nextPos.x, y: nextPos.y };
+            evalRecord.actionPosition = { row: nextPos.row, col: nextPos.col };
     
             maxEvalRecord = (evalRecord.value > maxEvalRecord.value) ? evalRecord : maxEvalRecord;
             minEvalRecord = (evalRecord.value < minEvalRecord.value) ? evalRecord : minEvalRecord;
@@ -137,7 +159,7 @@ class TicTacToeWithAI {
             else
                 beta = beta > evalRecord.value ? evalRecord.value : beta;
     
-            this.#fieldMatrix[nextPos.x][nextPos.y] = ' ';
+            this.#fieldMatrix[nextPos.row][nextPos.col] = ' ';
     
             if(beta <= alpha)
                 break;

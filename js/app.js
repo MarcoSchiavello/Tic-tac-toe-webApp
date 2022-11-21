@@ -35,7 +35,6 @@ function displayWinner(winner) {
 }
 
 function moveWinnerLine(winner) {
-    console.log(winner);
     if(winner.position === null)
         return;
 
@@ -44,8 +43,12 @@ function moveWinnerLine(winner) {
     if(winner.position[1] !== null)
         line.style[winner.position[0] === 90 ? 'top' : 'left'] = ( (winner.position[1] * 10) + 5 + winner.position[1] - (winner.position[0] === null)/2) + 'vh';
 
-    line.style.height = Math.abs(winner.position[0]) === 45 ? '150%' : '115%';
     line.style.background = 'var(--clr-' + (winner.winner === 1 ? 'cross' : 'circle') + ')';
+    setTimeout(() => {
+        line.style.transition = '0.4s ease';
+        line.style.height = Math.abs(winner.position[0]) === 45 ? '150%' : '115%';
+    }, 4);
+    
 }
 
 function resetWinnerLine() {
@@ -54,4 +57,5 @@ function resetWinnerLine() {
     line.style.top = '50%';
     line.style.left = '50%';
     line.style.height = '0';
+    line.style.transition = 'none';
 }

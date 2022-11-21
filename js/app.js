@@ -28,7 +28,7 @@ $('#reset').addEventListener('click',e => {
 
 
 function displayWinner(winner) {
-    $('#winner').innerHTML = 'HAI ' + (winner.winner === 2 ? 'PERSO' : winner.winner === 1 ? 'VINTO' : 'PAREGGIO');
+    $('#winner').innerHTML = 'HAI ' + (winner.winner === 2 ? 'PERSO' : winner.winner === 1 ? 'VINTO' : 'PAREGGIATO');
     $('#winner').style.color = 'var(--clr-' + (winner.winner === 2 ? 'circle' : winner.winner === 1 ? 'cross' : 'draw') + ')';
     $('.slider__body').style.right = '-100%';
     moveWinnerLine(winner);

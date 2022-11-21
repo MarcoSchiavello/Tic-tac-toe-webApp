@@ -118,22 +118,40 @@ class TicTacToeWithAI {
         };
     }
 
-    checkWinner() {
+    checkWinner(position = false) {
+        let winner;
         for(let i = 0; i < SIZE; i++) {
-            if(this.#fieldMatrix.matrix[i][0] === this.#fieldMatrix.matrix[i][1] && this.#fieldMatrix.matrix[i][1] === this.#fieldMatrix.matrix[i][2] && this.#fieldMatrix.matrix[i][2] !== ' ')
-              return 2 * (this.#fieldMatrix.matrix[i][1] === 'O') + (this.#fieldMatrix.matrix[i][1] === 'X');
+            if(this.#fieldMatrix.matrix[i][0] === this.#fieldMatrix.matrix[i][1] &&
+               this.#fieldMatrix.matrix[i][1] === this.#fieldMatrix.matrix[i][2] && 
+               this.#fieldMatrix.matrix[i][2] !== ' ') {
+                winner = 2 * (this.#fieldMatrix.matrix[i][1] === 'O') + (this.#fieldMatrix.matrix[i][1] === 'X');
+                return position ? {position: [90, i], winner: winner} : winner;
+            }
         
-            if(this.#fieldMatrix.matrix[0][i] === this.#fieldMatrix.matrix[1][i] && this.#fieldMatrix.matrix[1][i] === this.#fieldMatrix.matrix[2][i] && this.#fieldMatrix.matrix[2][i] !== ' ')
-              return 2 * (this.#fieldMatrix.matrix[1][i] === 'O') + (this.#fieldMatrix.matrix[1][i] === 'X');
+            if(this.#fieldMatrix.matrix[0][i] === this.#fieldMatrix.matrix[1][i] &&
+               this.#fieldMatrix.matrix[1][i] === this.#fieldMatrix.matrix[2][i] &&
+               this.#fieldMatrix.matrix[2][i] !== ' ') {
+                winner = 2 * (this.#fieldMatrix.matrix[1][i] === 'O') + (this.#fieldMatrix.matrix[1][i] === 'X');
+                return position ? {position: [null, i], winner: winner} : winner;
+            }
         }
         
-        if(((this.#fieldMatrix.matrix[0][0] === this.#fieldMatrix.matrix[1][1] && this.#fieldMatrix.matrix[1][1] === this.#fieldMatrix.matrix[2][2])
-        ||
-        (this.#fieldMatrix.matrix[0][2] === this.#fieldMatrix.matrix[1][1] && this.#fieldMatrix.matrix[1][1] === this.#fieldMatrix.matrix[2][0])) && this.#fieldMatrix.matrix[1][1] !== ' ')
-        return (2 * (this.#fieldMatrix.matrix[1][1] === 'O') + (this.#fieldMatrix.matrix[1][1] === 'X'));
-    
+        if((this.#fieldMatrix.matrix[0][0] === this.#fieldMatrix.matrix[1][1] && 
+            this.#fieldMatrix.matrix[1][1] === this.#fieldMatrix.matrix[2][2]) &&
+            this.#fieldMatrix.matrix[1][1] !== ' ') {
+            winner = 2 * (this.#fieldMatrix.matrix[1][1] === 'O') + (this.#fieldMatrix.matrix[1][1] === 'X');
+            return position ? {position: [-45, null], winner: winner} : winner;
+        }
+
+        if(((this.#fieldMatrix.matrix[0][2] === this.#fieldMatrix.matrix[1][1] && 
+             this.#fieldMatrix.matrix[1][1] === this.#fieldMatrix.matrix[2][0])) &&
+             this.#fieldMatrix.matrix[1][1] !== ' ') {
+            winner = 2 * (this.#fieldMatrix.matrix[1][1] === 'O') + (this.#fieldMatrix.matrix[1][1] === 'X');
+            return position ? {position: [45, null], winner: winner} : winner;
+        }
+     
         if((this.#nthBlankPosition().row === -1))
-            return 3;
+            return position ? {position: null, winner: 3} : 3;
     
         return 0;
     }

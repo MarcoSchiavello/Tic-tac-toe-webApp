@@ -1,10 +1,10 @@
 /*________Tic-tac-toe_______*/
 .tic-tac-toe {
+    position: relative;
     width: max-content;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
-    grid-auto-rows: 3;
     background-color: var(--clr-primary);
 }
 
@@ -34,50 +34,66 @@
 /*_______Button______*/
 .button {
     position: relative;
-    padding: 1rem 2rem 0.5rem 2.5rem;
-    color: var(--clr-primary);
+    font-size: 1rem;
+    padding: 0.7rem 2rem;
+    font-weight: 800;
+    color: var(--clr-background);
     border: 3px solid var(--clr-primary);
-    background-color: transparent;
-    -webkit-transition: padding 0.3s ease-in-out;
-    transition: padding 0.3s ease-in-out;
-}
-
-.button:before {
-    content: "";
-    position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    z-index: -1;
-    height: 100%;
-    width: 100%;
-    background-color: var(--clr-btn-background);
-    border-right: 3px solid var(--clr-btn-background);
-    border-bottom: 3px solid var(--clr-btn-background);
-    -webkit-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+    background-color: var(--clr-primary);
+    transition: 0.3s ease-in-out;
 }
 
 .button:hover {
-    padding: 0.75rem 2.25rem;
+    color: var(--clr-primary);
+    background-color: var(--clr-background);
 }
 
-.button:hover:before {
-    top: 0;
-    left: 0;
-}
-
-/*______winner-page______*/
-.winner-page {
+/*_________slider_______*/
+.slider {
     width: 100vw;
-    height: 100vh;
+    height: 3rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider__body {
+    width: max-content;
+    display: flex;
     position: absolute;
     top: 0;
-    left: 0;
-    display: none;
+    right: 0;
+    z-index: 1000;
+    transition: 0.4s ease;
+}   
+
+.slider__cont {
+    width: 100vw;
+    display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    gap: 2rem;
-    background-color: var(--clr-background);
-    z-index: 1000;
+}
+
+/*______Title_______*/
+.title {
+    font-size: 3rem;
+    position: absolute;
+    top: 3rem;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+/*______Winner-line______*/
+.winner-line {
+    height: 0;
+    width: 0.5rem;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translateY(-50%);
+    background-color: var(--clr-primary);
+    border: none;
+    transform-origin: center;
+    border-radius: 5rem;
+    transition: 0.4s ease;
 }

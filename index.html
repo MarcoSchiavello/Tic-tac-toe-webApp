@@ -9,10 +9,24 @@
     <title>Tris</title>
 </head>
 <body>
-    <div class="winner-page"><h1 id="winner"></h1><button class="button" id="reset">Ricomincia</button></div>
-    <h1>Tris impossibile</h1>
-    <h3>Turno: <span id="turn"></span></h3>
-    <div id="ticTacToe" class="tic-tac-toe"></div>
-    <button class="button" id="reset">Ricomincia</button>
+    <h1 class="title">Tris</h1>
+
+    <div class="container">
+        <div class="slider">
+            <div  class="slider__body">
+                <div class="slider__cont">
+                    <h1 id="winner"></h1>
+                </div>
+                <div class="slider__cont">
+                    <h3>Turno: <span id="turn"></span></h3>
+                </div>
+            </div>
+        </div>
+        
+        <div id="ticTacToe" class="tic-tac-toe">
+            <hr class="winner-line">
+        </div>
+        <button class="button" id="reset">Ricomincia</button>
+    </div>
 </body>
 </html>
